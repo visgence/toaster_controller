@@ -5,7 +5,6 @@ import struct
 import time
 import serial
 import pid2
-import time
 import argparse
 import json
 
@@ -40,7 +39,9 @@ if __name__ == "__main__":
 
     (set_time,set_temp,msg) = file.readline().rstrip().split(",")
     #serial.write(struct.pack("B",int(set_temp))    
-    
+
+
+##simulate real-time update to plot    
 #    while(1):
 
 #        p.setPoint(float(set_temp))
@@ -62,6 +63,7 @@ if __name__ == "__main__":
 #        if(int(set_time)+start_time <= time.time()):
 #            (set_time,set_temp,msg) = file.readline().rstrip().split(",")
 
+        #time.sleep(1)
 
 
 #graph generated profile

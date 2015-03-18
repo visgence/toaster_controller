@@ -5,7 +5,6 @@ import struct
 import time
 import serial
 import pid2
-import time
 
 if __name__ == "__main__":
 
