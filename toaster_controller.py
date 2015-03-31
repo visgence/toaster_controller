@@ -42,28 +42,28 @@ if __name__ == "__main__":
 
 
 ##simulate real-time update to plot    
-#    while(1):
+    while(1):
 
-#        p.setPoint(float(set_temp))
+        p.setPoint(float(set_temp))
            
-#        temp = float(serial.readline().strip());
+        temp = float(serial.readline().strip());
         
-#        pid = p.update(temp)
-#        if(pid>32):
-#            output = 32
-#        elif(pid<0):
-#            output = 0
-#        else:
-#            output = int(pid)
+        pid = p.update(temp)
+        if(pid>32):
+            output = 32
+        elif(pid<0):
+            output = 0
+        else:
+            output = int(pid)
         
-#        print "Time " + set_time + " Temp: " + str(temp) + " "  + "Set_temp: " + set_temp  +" PID: " + str(output) + " PID: " + str(pid) + " " + msg
+        print "Time " + set_time + " Temp: " + str(temp) + " "  + "Set_temp: " + set_temp  +" PID: " + str(output) + " PID: " + str(pid) + " " + msg
 
-#        serial.write(struct.pack("B",output))
+        serial.write(struct.pack("B",output))
 
-#        if(int(set_time)+start_time <= time.time()):
-#            (set_time,set_temp,msg) = file.readline().rstrip().split(",")
+        if(int(set_time)+start_time <= time.time()):
+            (set_time,set_temp,msg) = file.readline().rstrip().split(",")
 
-        #time.sleep(1)
+        time.sleep(1)
 
 
 #graph generated profile

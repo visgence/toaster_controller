@@ -13,7 +13,9 @@ if __name__ == "__main__":
     
     set = 0
 
-    serial = serial.Serial(port='COM19',baudrate=9600)
+    #serial = serial.Serial(port='COM19',baudrate=9600)
+    #serial = serial.Serial(port='/dev/tty/ACM1',baudrate=9600)
+    serial = serial.Serial(port='/dev/tty/ACM0',baudrate=9600)
     
     time.sleep(2)
     print "Start"
