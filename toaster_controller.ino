@@ -20,7 +20,8 @@ void setup() {
   pinMode(OUT1, OUTPUT);
   pinMode(IN1, INPUT);
   attachInterrupt(4, zero, HIGH);
-  analogReference(EXTERNAL);
+  //analogReference(EXTERNAL);
+  analogReference(DEFAULT);
   Serial.begin(9600);
   
 }
@@ -28,8 +29,8 @@ void setup() {
 // the loop routine runs over and over again forever:
 void loop() {
   // read the input on analog pin 0:
-  
   sum_value += analogRead(A1);
+ 
   if (i>DIV) {
     sensor_value = map(sum_value/128,0,1023*(DIV/128),0,4096);
     temp = sensor_value/10.0;

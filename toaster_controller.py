@@ -9,13 +9,13 @@ import argparse
 import json
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--port', help="Input Serial Port", required = True)
-parser.add_argument('--profile', help="Input Profile File")
-args = parser.parse_args()
+#parser = argparse.ArgumentParser()
+#parser.add_argument('--port', help="Input Serial Port", required = True)
+#parser.add_argument('--profile', help="Input Profile File")
+#args = parser.parse_args()
 
-print "port is : %s " % args.port
-print "profile file : %s " % args.profile
+#print "port is : %s " % args.port
+#print "profile file : %s " % args.profile
 
 if __name__ == "__main__":
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     
     set = 0
 
-    serial = serial.Serial(port=args.port,baudrate=9600)
+    serial = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
     
     time.sleep(2)
     print "Start"
