@@ -59,10 +59,6 @@ plt.ion()
 
 v = [0,300,0,300]
 
-print min(setpoints)
-print max(setpoints)
-#print setpoints[0]
-
 plt.axis(v)
 time = 0
 prev_temp = setpoints[0]['temp']
