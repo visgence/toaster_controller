@@ -31,6 +31,7 @@ with open(args.profile) as f:
     setpoints = json.load(f)
 f.close()
 
+
 serial = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
 
 #plots in realtime
@@ -49,7 +50,8 @@ high = max_xy['t_plus']
 ax1.set_xlim(low,high)
 ax1.set_ylim(low,high)
 
-title = ax1.text(.5, 1.005, '', transform=ax1.transAxes)
+cur_title = ax1.text(.5, 1.005, '', transform=ax1.transAxes)
+tar_title = ax1.text(.3,1.005, '', transform=ax1.transAxes)
 
 time = 0
 prev_temp = setpoints[0]['temp']
@@ -78,8 +80,8 @@ for i in range(1, len(setpoints)):
         #incoming data 
         temp1 = float(serial.readline().strip());
         ax1.scatter(time, temp1, color='red')
-      
-        title.set_text(str(temp1))
+        tar_title.set_text("Target %i" % (temp))
+        cur_title.set_text("Current %i" % (temp1))
 
         plt.draw()
         sleep(0.05)
@@ -87,8 +89,6 @@ for i in range(1, len(setpoints)):
     prev_temp = setpoints[i]['temp']
     prev_time = setpoints[i]['t_plus']
 
-
-anim = animation.FuncAnimation(fig,updatefig,blit=True, fargs=temp1, init_func=init)
 
 plt.autoscale(enable=False)
 plt.show(block=True)
