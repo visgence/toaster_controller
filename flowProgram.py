@@ -6,6 +6,7 @@ import argparse
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
+import csv
 
 from time import sleep
 from matplotlib import pylab
@@ -23,16 +24,18 @@ from matplotlib import pylab
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--profile', help="Input Profile File")
+parser.add_argument('--port', help="Input Serial Port", required = True)
 args = parser.parse_args()
 
 print "profile file : %s " % args.profile
+print "designated port : %s " % args.port
 
 with open(args.profile) as f:
     setpoints = json.load(f)
 f.close()
 
 
-serial = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
+serial = serial.Serial(port=args.port, baudrate=9600)
 
 #plots in realtime
 plt.ion()
@@ -60,10 +63,11 @@ prev_time = setpoints[0]['t_plus']
 max_y = max(setpoints)
 print max_y['t_plus']
 
-
 data = {}
 
-for i in range(1, len(setpoints)):
+#for i in range(1, len(setpoints)):
+for i in range(1, 2):
+
     #print setpoints[i] #DEBUG
     slope = (float(setpoints[i]['temp']) - float(prev_temp)) / (float(setpoints[i]['t_plus'] - float(prev_time)))
     #print slope #DEBUG
@@ -75,7 +79,9 @@ for i in range(1, len(setpoints)):
         time += 1
        
         print "%d,%d" % (time, temp)
-        
+       
+        data[time]=temp
+
         ax1.scatter(time,temp)
         #incoming data 
         temp1 = float(serial.readline().strip());
@@ -84,11 +90,27 @@ for i in range(1, len(setpoints)):
         cur_title.set_text("Current %i" % (temp1))
 
         plt.draw()
-        sleep(0.05)
+        #sleep(0.05)
 
     prev_temp = setpoints[i]['temp']
     prev_time = setpoints[i]['t_plus']
+    
+#for key, value in data.items():
+#    print key, int(value)
+#print data.items()[0]
+
+print data.keys()[0]
+print data.values()[0]
 
 
 plt.autoscale(enable=False)
 plt.show(block=True)
+
+#saves until program is done, need before program is completed.
+with open('curve.csv', 'a+') as f:
+    writer = csv.writer(f, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    for key, value in data.items():
+        writer.writerow([key,value])
+
+f.close()
+

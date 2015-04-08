@@ -26,6 +26,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     (set_time,set_temp,msg) = file.readline().rstrip().split(",")
+    print "start of readline file %s : %s " % (set_time, set_temp)
     #serial.write(struct.pack("B",int(set_temp))    
     
     while(1):
@@ -48,3 +49,4 @@ if __name__ == "__main__":
 
         if(int(set_time)+start_time <= time.time()):
             (set_time,set_temp,msg) = file.readline().rstrip().split(",")
+            print "in if statement of readline file %s : %s " % (set_time, set_temp)
