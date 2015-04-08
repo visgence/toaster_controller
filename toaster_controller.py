@@ -91,22 +91,13 @@ if __name__ == "__main__":
     p = pid2.PID(2,0.05,0.5,int_max=640,int_min=0)
     p.setPoint(0)
 
-    #read file
-    #file = open(sys.argv[1],'r')
     start_time = time.time()
 
     for k, v in datalist:
         set_time = k
         set_temp = v
-        #set_time = data.keys()[counter]
-        #set_temp = int(data.values()[counter])
-        #(set_time,set_temp,msg) = file.readline().rstrip().split(",")
-        #serial.write(struct.pack("B",int(set_temp))  #commented previously  
-
-        #while(1):
 
         p.setPoint(float(set_temp))
-
         #read incoming temp           
         temp = float(serial.readline().strip());
         
@@ -118,7 +109,6 @@ if __name__ == "__main__":
         else:
             output = int(pid)
         
-    #   print "Time " + set_time + " Temp: " + str(temp) + " "  + "Set_temp: " + set_temp  +" PID: " + str(output) + " PID: " + str(pid) + " " + msg
         print "Time " + str(set_time) + " Temp: " + str(temp) + " "  + "Set_temp: " + str(set_temp)  +" PID: " + str(output) + " PID: " + str(pid)
 
         #graph here
@@ -135,13 +125,6 @@ if __name__ == "__main__":
         #break while loop and keep graph up-- before end of dict
         if set_time >= max_xy:
             break
-
-        #if(int(set_time)+start_time <= time.time()):
-            #print "here"
-            #counter+=1
-            #set_time = data.keys()[counter]
-            #set_temp = int(data.values()[counter])
-            #(set_time,set_temp,msg) = file.readline().rstrip().split(",")
 
         time.sleep(1)
 
