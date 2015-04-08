@@ -42,10 +42,12 @@ max_y = max(setpoints)
 print max_y['t_plus']
 
 data = {}
+datalist = []
+list_temp ={}
 
 #computes the profile
-for i in range(1, len(setpoints)):
-#for i in range(1, 2):
+#for i in range(1, len(setpoints)):
+for i in range(1, 2):
     #print setpoints[i] #DEBUG
     slope = (float(setpoints[i]['temp']) - float(prev_temp)) / (float(setpoints[i]['t_plus'] - float(prev_time)))
     #print slope #DEBUG
@@ -61,6 +63,8 @@ for i in range(1, len(setpoints)):
 
     prev_temp = setpoints[i]['temp']
     prev_time = setpoints[i]['t_plus']
+
+datalist = sorted([(key,value) for(key,value) in data.items()])
 
 if __name__ == "__main__":
 
@@ -91,12 +95,15 @@ if __name__ == "__main__":
     #file = open(sys.argv[1],'r')
     start_time = time.time()
 
-    set_time = data.keys()[counter]
-    set_temp = int(data.values()[counter])
-    #(set_time,set_temp,msg) = file.readline().rstrip().split(",")
-    #serial.write(struct.pack("B",int(set_temp))  #commented previously  
+    for k, v in datalist:
+        set_time = k
+        set_temp = v
+        #set_time = data.keys()[counter]
+        #set_temp = int(data.values()[counter])
+        #(set_time,set_temp,msg) = file.readline().rstrip().split(",")
+        #serial.write(struct.pack("B",int(set_temp))  #commented previously  
 
-    while(1):
+        #while(1):
 
         p.setPoint(float(set_temp))
 
@@ -129,14 +136,14 @@ if __name__ == "__main__":
         if set_time >= max_xy:
             break
 
-        if(int(set_time)+start_time <= time.time()):
-            counter+=1
-            set_time = data.keys()[counter]
-            set_temp = int(data.values()[counter])
+        #if(int(set_time)+start_time <= time.time()):
+            #print "here"
+            #counter+=1
+            #set_time = data.keys()[counter]
+            #set_temp = int(data.values()[counter])
             #(set_time,set_temp,msg) = file.readline().rstrip().split(",")
 
         time.sleep(1)
-
 
 plt.autoscale(enable=False)
 plt.show(block=True)
