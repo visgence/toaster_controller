@@ -1,7 +1,7 @@
 
 #define DIV 4096
-#define OUT1 A3
-#define IN1 7
+#define OUT1 3
+#define IN1 2
 
 long sum_value= 0;
 long  sensor_value =0;
@@ -19,7 +19,7 @@ void setup() {
 
   pinMode(OUT1, OUTPUT);
   pinMode(IN1, INPUT);
-  attachInterrupt(4, zero, HIGH);
+  attachInterrupt(0, zero, HIGH);
   analogReference(EXTERNAL);
   Serial.begin(9600);
   
@@ -29,9 +29,9 @@ void setup() {
 void loop() {
   // read the input on analog pin 0:
   
-  sum_value += analogRead(A1);
+  sum_value += analogRead(A0);
   if (i>DIV) {
-    sensor_value = map(sum_value/128,0,1023*(DIV/128),0,4096);
+    sensor_value = map(sum_value/128,0,1023*(DIV/128),0,5000);
     temp = sensor_value/10.0;
     sum_value = 0;    
     i=0;
