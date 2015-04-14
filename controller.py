@@ -5,7 +5,6 @@ import struct
 import time
 import serial
 import pid2
-import time
 
 if __name__ == "__main__":
 
@@ -14,7 +13,7 @@ if __name__ == "__main__":
     
     set = 0
 
-    serial = serial.Serial(port='COM19',baudrate=9600)
+    serial = serial.Serial(port='/dev/ttyACM0',baudrate=9600)
     
     time.sleep(2)
     print "Start"
@@ -26,8 +25,8 @@ if __name__ == "__main__":
     file = open(sys.argv[1],'r')
     start_time = time.time()
 
-
     (set_time,set_temp,msg) = file.readline().rstrip().split(",")
+    print "start of readline file %s : %s " % (set_time, set_temp)
     #serial.write(struct.pack("B",int(set_temp))    
     
     while(1):
@@ -35,7 +34,7 @@ if __name__ == "__main__":
         p.setPoint(float(set_temp))
            
         temp = float(serial.readline().strip());
-        
+               
         pid = p.update(temp)
         if(pid>32):
             output = 32
@@ -50,4 +49,4 @@ if __name__ == "__main__":
 
         if(int(set_time)+start_time <= time.time()):
             (set_time,set_temp,msg) = file.readline().rstrip().split(",")
-
+            print "in if statement of readline file %s : %s " % (set_time, set_temp)

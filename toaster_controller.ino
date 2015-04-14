@@ -20,7 +20,6 @@ void setup() {
   pinMode(OUT1, OUTPUT);
   pinMode(IN1, INPUT);
   attachInterrupt(0, zero, HIGH);
-  analogReference(EXTERNAL);
   Serial.begin(9600);
   
 }
@@ -30,6 +29,7 @@ void loop() {
   // read the input on analog pin 0:
   
   sum_value += analogRead(A0);
+
   if (i>DIV) {
     sensor_value = map(sum_value/128,0,1023*(DIV/128),0,5000);
     temp = sensor_value/10.0;
