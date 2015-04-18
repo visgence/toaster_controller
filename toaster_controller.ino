@@ -1,5 +1,12 @@
+/*
+ * Toaster Oven Controller
+ * Sending a '%' will print current temperature in C
+ * Sending a value 0x0 to 0x32 (period) will set PWM value
+ * Visgence Inc
+ * Evan Salazar (evan@visgence.com)
 
-#define DIV 4096
+ */
+#define DIV 1024
 #define OUT1 3
 #define IN1 2
 
@@ -31,11 +38,12 @@ void loop() {
   sum_value += analogRead(A0);
 
   if (i>DIV) {
-    sensor_value = map(sum_value/128,0,1023*(DIV/128),0,5000);
-    temp = sensor_value/10.0;
+    //sensor_value = map(sum_value/DIV,0,1023,0,50000);
+    //temp = sensor_value/100.0;
+    temp = sum_value * 500.0 / (1023.0*DIV);
     sum_value = 0;    
     i=0;
-    Serial.println(temp);
+    //Serial.println(temp);
   }
   i++;  
   
@@ -51,10 +59,17 @@ void loop() {
     if (Serial.available() > 0) {
         //get incoming byte
         inByte = Serial.read();
-    
-        if(inByte>period)
+        
+        //Print temp if we get a "%"
+        
+        if(inByte == '%')
+            Serial.println(temp);
+
+        else if(inByte>period)
             inByte = period;
-        delay1= inByte;
+        
+        else
+            delay1= inByte;
         }
 
 }
