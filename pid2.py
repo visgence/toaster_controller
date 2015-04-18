@@ -1,8 +1,11 @@
+#-------------------------------------------------------------------------------
+# PID.py
 # A simple implementation of a PID controller
 #-------------------------------------------------------------------------------
 # Example source code for the book "Real-World Instrumentation with Python"
 # by J. M. Hughes, published by O'Reilly Media, December 2010,
 # ISBN 978-0-596-80956-0.
+# Integral Max and Min Added by Evan Salazar (evan@visgence.com)
 #-------------------------------------------------------------------------------
 
 import time
@@ -14,13 +17,18 @@ class PID:
         instantiated all the gain variables are set to zero, so calling
         the method GenOut will just return zero.
     """
-    def __init__(self):
+    def __init__(self,Kp=0,Ki=0,Kd=0,int_max=500,int_min=-500):
         # initialze gains
-        self.Kp = 0
-        self.Kd = 0
-        self.Ki = 0
+        self.Kp = Kp
+        self.Kd = Kd
+        self.Ki = Ki
+        self.int_max = int_max
+        self.int_min = int_min
 
         self.Initialize()
+
+    def setPoint(self,set_point):
+        self.set_point = set_point    
 
     def SetKp(self, invar):
         """ Set proportional gain. """
@@ -67,9 +75,19 @@ class PID:
         if dt > 0:                              # no div by zero
             self.Cd = de/dt                     # derivative term
 
+        if self.Ci > self.int_max:
+            self.Ci = self.int_max
+        
+        elif self.Ci < self.int_min:
+            self.Ci = self.int_min
+
+
         self.prevtm = self.currtm               # save t for next pass
         self.prev_err = error                   # save t-1 error
 
         # sum the terms and return the result
+        #print "P: %f I: %f D %f" % (self.Cp,(self.Ki * self.Ci),(self.Kd * self.Cd))
         return self.Cp + (self.Ki * self.Ci) + (self.Kd * self.Cd)
-
+    
+    def update(self,value):
+        return  self.GenOut(self.set_point-value)
