@@ -8,16 +8,16 @@ import pid2
 import argparse
 import json
 import csv
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-import matplotlib.gridspec as gridspec
+import matplotlib
+matplotlib.use("tkagg") #necessary for anaconda/windows
+from matplotlib import pyplot
+from matplotlib import gridspec
 import numpy as np
 
 from time import sleep
-from matplotlib import pylab
 
 if __name__ == "__main__":
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--profile', help="Input Profile File to Convert")
     parser.add_argument('--port', help="Input Serial Port", required = True)
@@ -64,7 +64,7 @@ if __name__ == "__main__":
         #print slope #DEBUG
         time_t = prev_time
         temp_t = prev_temp
-        
+
         while time_t < setpoints[i]['t_plus']:
             temp_t += slope
             time_t += 1
@@ -77,13 +77,11 @@ if __name__ == "__main__":
 
     datalist = sorted([(key,value) for(key,value) in data.items()])
 
+    pyplot.ion()
 
 
-    plt.ion()
-    
-    
     gs = gridspec.GridSpec(2, 1,height_ratios=[2,1])
-    fig = plt.figure()
+    fig = pyplot.figure()
     ax1 = fig.add_subplot(gs[0])
     ax1.set_xlim(low,high)
     ax1.set_ylim(low,high)
@@ -96,9 +94,9 @@ if __name__ == "__main__":
     ax2.set_xlim(low,high)
     ax2.set_ylim(0,32)
 
-    wm = plt.get_current_fig_manager()
+    wm = matplotlib.pyplot.get_current_fig_manager()
     wm.window.wm_geometry("800x900+50+50")
-    
+
     output = 1
     wait = 0
 
@@ -118,9 +116,9 @@ if __name__ == "__main__":
     for k, v in datalist:
         set_time = k
         set_temp = v
-        
+
         p.setPoint(float(set_temp))
-        #read incoming temp           
+        #read incoming temp
         serial.write('%');
         try:
             temp = float(serial.readline().strip());
@@ -135,7 +133,7 @@ if __name__ == "__main__":
             output = 0
         else:
             output = int(pid)
-        
+
         serial.write(struct.pack("B",output))
         print "Time " + str(set_time) + " Temp: " + str(temp) + " "  + "Set_temp: " + str(set_temp)  +" PWR_SET: " + str(output) + " PID: " + str(pid)
 
@@ -147,7 +145,7 @@ if __name__ == "__main__":
         cur_title.set_text("Current %i" % (temp))
         set_title.set_text("Pwr Set %i" % (output))
 
-        plt.draw()
+        pyplot.draw()
         #sleep(0.05)
 
 
@@ -160,7 +158,7 @@ if __name__ == "__main__":
     #Turn off when exiting
     print "Program Finished"
     serial.write(struct.pack("B",0))
-    plt.autoscale(enable=False)
-    plt.show(block=True)
+    pyplot.autoscale(enable=False)
+    pyplot.show(block=True)
 
 
